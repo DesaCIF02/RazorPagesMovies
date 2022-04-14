@@ -20,12 +20,17 @@ namespace RazorPagesMovies.Pages.Movies
 
         public IList<Movie> Movie;
         public SelectList Genres;
+
         public string sMovieGenre { get; set; }
-        public async Task OnGetAsync(string sMovieGenre, string sMovieTitle)
+        public decimal nMoviePrice { get; set; }
+        public async Task OnGetAsync(string sMovieGenre, string sMovieTitle,decimal nMoviePrice)
         {
             IQueryable<string> sGenreQuery = from dtMovie in _context.Movie
                                             orderby dtMovie.Genre
                                             select dtMovie.Genre;
+            IQueryable<decimal> nPriceQuery = from dtMovie in _context.Movie
+                                             orderby dtMovie.Price
+                                             select dtMovie.Price;
             var movies = from dtMovie in _context.Movie
                          select dtMovie;
             if (!String.IsNullOrEmpty(sMovieTitle))
@@ -35,6 +40,10 @@ namespace RazorPagesMovies.Pages.Movies
             if (!String.IsNullOrEmpty(sMovieGenre))
             {
                 movies = movies.Where(movie => movie.Genre == sMovieGenre);
+            }
+            if (nMoviePrice>0) 
+            {
+                movies = movies.Where(movie => movie.Price <= nMoviePrice);
             }
             Genres = new SelectList(await sGenreQuery.Distinct().ToListAsync());
             //Movie = await _context.Movie.ToListAsync();
