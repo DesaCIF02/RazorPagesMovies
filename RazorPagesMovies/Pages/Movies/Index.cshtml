@@ -12,12 +12,13 @@
 </p>
 <form>
     <p>
+        Genre: 
         <select asp-for="sMovieGenre" asp-items="Model.Genres">
             <option value="">All</option>
         </select>
 
-        Movie Title:<input type="text" name="sMovieTitle">
-        Max Movie Price:<input type="text" name="nMoviePrice">
+        Movie Title: <input type="text" name="sMovieTitle">
+        Max Movie Price: <input type="text" name="nMoviePrice">
         <input type="submit" value="Filter" />
         
     </p>
