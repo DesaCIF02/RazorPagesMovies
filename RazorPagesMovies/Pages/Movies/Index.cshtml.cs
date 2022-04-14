@@ -11,33 +11,41 @@ namespace RazorPagesMovies.Pages.Movies
 {
     public class IndexModel : PageModel
     {
-        private readonly RazorPagesMovies.Data.RazorPagesMoviesContext _context;
+        private readonly Data.RazorPagesMoviesContext _context;
 
-        public IndexModel(RazorPagesMovies.Data.RazorPagesMoviesContext context)
+        public IndexModel(Data.RazorPagesMoviesContext context)
         {
             _context = context;
         }
 
         public IList<Movie> Movie;
         public SelectList Genres;
-        public string MovieGenre { get; set; }
 
-        public async Task OnGetAsync(string movieGenre, string searchString)
+        public string sMovieGenre { get; set; }
+        public decimal nMoviePrice { get; set; }
+        public async Task OnGetAsync(string sMovieGenre, string sMovieTitle,decimal nMoviePrice)
         {
-            IQueryable<string> genreQuery = from m in _context.Movie
-                                            orderby m.Genre
-                                            select m.Genre;
-            var movies = from m in _context.Movie
-                         select m;
-            if (!String.IsNullOrEmpty(searchString))
+            IQueryable<string> sGenreQuery = from dtMovie in _context.Movie
+                                            orderby dtMovie.Genre
+                                            select dtMovie.Genre;
+            IQueryable<decimal> nPriceQuery = from dtMovie in _context.Movie
+                                             orderby dtMovie.Price
+                                             select dtMovie.Price;
+            var movies = from dtMovie in _context.Movie
+                         select dtMovie;
+            if (!String.IsNullOrEmpty(sMovieTitle))
             {
-                movies = movies.Where(s => s.Title.Contains(searchString));
+                movies = movies.Where(movie => movie.Title.Contains(sMovieTitle));
             }
-            if (!String.IsNullOrEmpty(movieGenre))
+            if (!String.IsNullOrEmpty(sMovieGenre))
             {
-                movies = movies.Where(x => x.Genre == movieGenre);
+                movies = movies.Where(movie => movie.Genre == sMovieGenre);
             }
-            Genres = new SelectList(await genreQuery.Distinct().ToListAsync());
+            if (nMoviePrice>0) 
+            {
+                movies = movies.Where(movie => movie.Price <= nMoviePrice);
+            }
+            Genres = new SelectList(await sGenreQuery.Distinct().ToListAsync());
             //Movie = await _context.Movie.ToListAsync();
             Movie = await movies.ToListAsync();
         }
