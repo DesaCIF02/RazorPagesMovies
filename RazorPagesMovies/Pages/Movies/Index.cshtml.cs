@@ -23,14 +23,19 @@ namespace RazorPagesMovies.Pages.Movies
 
         public string sMovieGenre { get; set; }
         public decimal nMoviePrice { get; set; }
-        public async Task OnGetAsync(string sMovieGenre, string sMovieTitle,decimal nMoviePrice)
+        public DateTime dReleaseDate { get; set; }
+        public async Task OnGetAsync(string sMovieGenre, string sMovieTitle, decimal nMoviePrice, DateTime dMovieReleaseDate)
         {
             IQueryable<string> sGenreQuery = from dtMovie in _context.Movie
-                                            orderby dtMovie.Genre
-                                            select dtMovie.Genre;
+                                             orderby dtMovie.Genre
+                                             select dtMovie.Genre;
             IQueryable<decimal> nPriceQuery = from dtMovie in _context.Movie
-                                             orderby dtMovie.Price
-                                             select dtMovie.Price;
+                                              orderby dtMovie.Price
+                                              select dtMovie.Price;
+            IQueryable<DateTime> dReleaseDateQuery = from dtMovie in _context.Movie
+                                                     orderby dtMovie.ReleaseDate
+                                                     select dtMovie.ReleaseDate;
+
             var movies = from dtMovie in _context.Movie
                          select dtMovie;
             if (!String.IsNullOrEmpty(sMovieTitle))
@@ -41,9 +46,13 @@ namespace RazorPagesMovies.Pages.Movies
             {
                 movies = movies.Where(movie => movie.Genre == sMovieGenre);
             }
-            if (nMoviePrice>0) 
+            if (nMoviePrice > 0)
             {
                 movies = movies.Where(movie => movie.Price <= nMoviePrice);
+            }
+            if (dMovieReleaseDate.Year > 1900)
+            {
+                movies = movies.Where(movie => movie.ReleaseDate <= dMovieReleaseDate);
             }
             Genres = new SelectList(await sGenreQuery.Distinct().ToListAsync());
             Movie = await movies.ToListAsync();

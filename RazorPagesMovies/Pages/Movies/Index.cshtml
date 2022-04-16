@@ -11,17 +11,52 @@
     <a asp-page="Create">Create New</a>
 </p>
 <form>
-    <p>
-        Genre: 
-        <select asp-for="sMovieGenre" asp-items="Model.Genres">
-            <option value="">All</option>
-        </select>
+    <div class="card m-1 p-1">
+        <div class="row">
+            <div class="col">
 
-        Movie Title: <input type="text" name="sMovieTitle">
-        Max Movie Price: <input type="text" name="nMoviePrice">
-        <input type="submit" value="Filter" />
-        
-    </p>
+                <div class="form-group">
+                    <label>Movie Title:</label>
+                    <input type="text" name="sMovieTitle" class="form-control" placeholder="Movie Title">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Movie Release Date</label>
+                    <input type="date" name="dMovieReleaseDate" class="form-control" id="MovieReleaseDate" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Genre:</label>
+                    <select asp-for="sMovieGenre" asp-items="Model.Genres" class="form-control">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Max Movie Price: <span id="MoviePriceLabel" class="badge badge-pill badge-warning" /></label>
+                    <input type="range" name="nMoviePrice" class="form-control" list="PriceDataList" min="10" max="100" step="10" value="100" id="MoviePriceRange">
+                    <datalist id="PriceDataList">
+                        <option value="10" />
+                        <option value="20" />
+                        <option value="30" />
+                        <option value="40" />
+                        <option value="50" />
+                        <option value="60" />
+                        <option value="70" />
+                        <option value="80" />
+                        <option value="90" />
+                        <option value="100" />
+                    </datalist>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Filter" class="btn btn-primary" />
+    </div>
 </form>
 <table class="table">
     <thead>
@@ -42,26 +77,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Movie) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var movie in Model.Movie)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => movie.Price)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@movie.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@movie.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@movie.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
