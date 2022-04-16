@@ -11,36 +11,52 @@
     <a asp-page="Create">Create New</a>
 </p>
 <form>
+    <div class="card m-1 p-1">
+        <div class="row">
+            <div class="col">
 
-    <div class="form-group">
-        <label>Movie Title:</label>
-        <input type="text" name="sMovieTitle" class="form-control" placeholder="Movie Title">
+                <div class="form-group">
+                    <label>Movie Title:</label>
+                    <input type="text" name="sMovieTitle" class="form-control" placeholder="Movie Title">
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Movie Release Date</label>
+                    <input type="date" name="dMovieReleaseDate" class="form-control" id="MovieReleaseDate" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Genre:</label>
+                    <select asp-for="sMovieGenre" asp-items="Model.Genres" class="form-control">
+                        <option value="">All</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Max Movie Price: <span id="MoviePriceLabel" class="badge badge-pill badge-warning" /></label>
+                    <input type="range" name="nMoviePrice" class="form-control" list="PriceDataList" min="10" max="100" step="10" value="100" id="MoviePriceRange">
+                    <datalist id="PriceDataList">
+                        <option value="10" />
+                        <option value="20" />
+                        <option value="30" />
+                        <option value="40" />
+                        <option value="50" />
+                        <option value="60" />
+                        <option value="70" />
+                        <option value="80" />
+                        <option value="90" />
+                        <option value="100" />
+                    </datalist>
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Filter" class="btn btn-primary" />
     </div>
-    <div class="form-group">
-        <label>Genre:</label>
-        <select asp-for="sMovieGenre" asp-items="Model.Genres" class="form-control">
-            <option value="">All</option>
-        </select>
-    </div>
-    <div class="form-group">
-    </div>
-        <label>Max Movie Price:</label>
-        <input type="range" name="nMoviePrikce" class="" list="PriceDataList" step="10">
-        <datalist id="PriceDataList">
-            <option value="10" label="$10" />
-            <option value="20" />
-            <option value="30" />
-            <option value="40" />
-            <option value="50" label="50" />
-            <option value="60" />
-            <option value="70" />
-            <option value="80" />
-            <option value="90" />
-            <option value="100" label="$100" />
-
-        </datalist>
-    <input type="submit" value="Filter" class="btn btn-primary" />
-
 </form>
 <table class="table">
     <thead>
